@@ -45,6 +45,13 @@ func (ls *LevelDBStore) getAutoIncrement() (int64, error) {
 	}
 	val, e := ls.db.Get(AUTOINCREMENT_KEY, nil)
 	if e != nil {
+		if e == leveldb.ErrNotFound {
+			e = ls.setAutoIncrement(1)
+			if e != nil {
+				return 0, e
+			}
+			return 1, nil
+		}
 		return 0, e
 	}
 	ls.currentAutoIncrement = com.StrTo(string(val)).MustInt64()
