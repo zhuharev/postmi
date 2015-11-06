@@ -46,11 +46,11 @@ func (ls *LevelDBStore) getAutoIncrement() (int64, error) {
 	val, e := ls.db.Get(AUTOINCREMENT_KEY, nil)
 	if e != nil {
 		if e == leveldb.ErrNotFound {
-			e = ls.setAutoIncrement(1)
+			e = ls.setAutoIncrement(0)
 			if e != nil {
 				return 0, e
 			}
-			return 1, nil
+			return 0, nil
 		}
 		return 0, e
 	}
@@ -107,12 +107,18 @@ func (ls *LevelDBStore) Delete(id int64) error {
 
 func (ls *LevelDBStore) GetSlice(limit int64, offset int64) (posts []*postmi.Post, e error) {
 	iter := ls.db.NewIterator(util.BytesPrefix([]byte("p")), nil)
-	for iter.Next() {
+	iter.Last()
+	var p *postmi.Post
+	p, e = postmi.NewPostFromJSON(iter.Value())
+	if e != nil {
+		return
+	}
+	posts = append(posts, p)
+	for iter.Prev() {
 		offset--
 		if offset > 0 {
 			continue
 		}
-		var p *postmi.Post
 		p, e = postmi.NewPostFromJSON(iter.Value())
 		if e != nil {
 			break
