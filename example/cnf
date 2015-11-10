@@ -1,0 +1,6 @@
+; Comment line
+[app]
+;prefix = /hello
+port = 8088
+templatespath = templates # Another comment
+;flag # implicit value for bool is true
