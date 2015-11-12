@@ -3,4 +3,14 @@
 ;prefix = /hello
 port = 8088
 templatespath = templates # Another comment
+assetpath=assets
 ;flag # implicit value for bool is true
+
+
+[admin]
+login="admin"
+password="admin"
+
+[database]
+driver=leveldb
+setting=db.leveldb

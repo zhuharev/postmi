@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/zhuharev/postmi"
+	_ "github.com/zhuharev/postmi/store/leveldb"
 )
 
 func main() {

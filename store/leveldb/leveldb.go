@@ -135,3 +135,7 @@ func (ls *LevelDBStore) GetSlice(limit int64, offset int64) (posts []*postmi.Pos
 	e = iter.Error()
 	return
 }
+
+func init() {
+	postmi.Register("leveldb", &LevelDBStore{})
+}
